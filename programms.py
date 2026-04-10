@@ -1,5 +1,5 @@
-import discord
-
+import discord # type: ignore
+# Importamos la función desde tu archivo bot_logic.py
 from bot_logic import gen_pass 
 
 intents = discord.Intents.default()
@@ -17,13 +17,15 @@ async def on_message(message):
 
     msg = message.content.lower()
 
+    # --- NUEVO COMANDO CON "+" ---
     if msg.startswith('¡pass'):
- 
+        # Generamos la contraseña de 10 caracteres usando tu lógica
         password_generada = gen_pass(10)
         await message.channel.send(f"🔑 Tu contraseña segura es: `{password_generada}`")
 
- 
+    # También podemos cambiar el saludo a "+" si quieres
     elif msg.startswith('¡hello'):
         await message.channel.send("¡Qué onda! Ahora respondo a los comandos con el signo ¡ 😎")
-      
-client.run("MTQ4Njg5ODUwNjk5MDg3ODc2MA.GZul4u.qxpu3JWcqVpiqFOH0zhtk3g4Fo4VepqjNvyk4U")
+
+# Tu Token de Discord
+client.run("tu token")
