@@ -1,31 +1,56 @@
-import discord # type: ignore
-# Importamos la función desde tu archivo bot_logic.py
-from bot_logic import gen_pass 
-
+ #Son los imports necesarios para el funcionamiento del bot.
+import discord
+import os
+from discord.ext import commands
+import random
 intents = discord.Intents.default()
 intents.message_content = True
-client = discord.Client(intents=intents)
-
-@client.event
+bot = commands.Bot(command_prefix='¡', intents=intents)
+# Este evento se ejecuta cuando el bot se conecta a Discord. Imprime un mensaje en la consola indicando que el bot ha iniciado sesión correctamente.    
+@bot.event
 async def on_ready():
-    print(f'- Botinsano encendido con prefijo "¡" como {client.user} -')
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    msg = message.content.lower()
-
-    # --- NUEVO COMANDO CON "+" ---
-    if msg.startswith('¡pass'):
-        # Generamos la contraseña de 10 caracteres usando tu lógica
-        password_generada = gen_pass(10)
-        await message.channel.send(f"🔑 Tu contraseña segura es: `{password_generada}`")
-
-    # También podemos cambiar el saludo a "+" si quieres
-    elif msg.startswith('¡hello'):
-        await message.channel.send("¡Qué onda! Ahora respondo a los comandos con el signo ¡ 😎")
-
+    print(f'Hemos iniciado sesión como {bot.user}')
+# Este comando sirve para que el bot responda con un mensaje de saludo cada vez que se ejecute el comando "hola".
+@bot.command()
+async def hola(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')
+# Este comando sirve para repetir la palabra "he" un número de veces que el usuario le da al bot, y el bot responderá con la palabra "he" repetida ese número de veces.
+@bot.command()
+async def heh(ctx, count_he = 5):
+    await ctx.send("he" * count_he)
+# Este comando sirve para dar la bienvenida a los usuarios a la escuela de kodland.
+@bot.command()
+async def kodland(ctx, count_he = 5):
+    await ctx.send("Bienvenido a la escuela de kodland")
+# Este comando sirve para sumar dos números enteros que el usuario le da al bot, y el bot responderá con la suma de esos números.
+@bot.command()
+async def suma(ctx, left: int, right: int):
+    """Adds two numbers together."""
+    await ctx.send(left + right)
+# Este comando sirve para elegir entre varias opciones que el usuario le da al bot, y el bot responderá con una de esas opciones de forma aleatoria.
+@bot.command(description='For when you wanna settle the score some other way')
+async def escoge(ctx, *choices: str):
+    """Chooses between multiple choices."""
+    await ctx.send(random.choice(choices))
+ # Este comando sirve para enviar una imagen aleatoria de la carpeta "images" cada vez que se ejecute el comando.
+@bot.command()
+async def memepy(ctx):
+    imagenes = os.listdir('images')
+    imagen = random.choice(imagenes)
+    with open('images/' + imagen, 'rb') as f:
+        # ¡Vamos a almacenar el archivo de la biblioteca Discord convertido en esta variable!
+        picture = discord.File(f)
+    # A continuación, podemos enviar este archivo como parámetro.
+    await ctx.send(file=picture)
+# Este comando sirve para enviar una imagen aleatoria de la carpeta "image" cada vez que se ejecute el comando.
+@bot.command()
+async def meme(ctx):
+    imagenes = os.listdir('image')
+    imagen = random.choice(imagenes)
+    with open('image/' + imagen, 'rb') as f:
+        # ¡Vamos a almacenar el archivo de la biblioteca Discord convertido en esta variable!
+        picture = discord.File(f)
+    # A continuación, podemos enviar este archivo como parámetro.
+    await ctx.send(file=picture)
 # Tu Token de Discord
-client.run("tu token")
+bot.run("Tu token")
