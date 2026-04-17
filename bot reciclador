@@ -1,0 +1,69 @@
+import discord
+from discord.ext import commands
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='¡', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'Bot reciclador conectado como {bot.user}')
+
+# Diccionario de residuos
+residuos = {
+    "plastico": "♻️ Reciclable",
+    "papel": "♻️ Reciclable",
+    "carton": "♻️ Reciclable",
+    "vidrio": "♻️ Reciclable",
+    "lata": "♻️ Reciclable",
+    "banana": "🌱 Orgánico",
+    "manzana": "🌱 Orgánico",
+    "restos de comida": "🌱 Orgánico",
+    "pañal": "🗑️ Basura",
+    "colilla": "🗑️ Basura",
+    "papel higienico": "🗑️ Basura",
+    "botella de pet": "♻️ Reciclable",
+    "periodico": "♻️ Reciclable",
+    "cascara de huevo": "🌱 Orgánico",
+    "hojas secas": "🌱 Orgánico",
+    "bolsa de plastico": "♻️ Reciclable",
+    "revista": "♻️ Reciclable",
+    "bolsa de te": "🌱 Orgánico",
+    "curita": "🗑️ Basura",
+    "chicle": "🗑️ Basura",
+    "unicel": "🗑️ Basura",
+    "aluminio": "♻️ Reciclable",
+    "tetra brik": "♻️ Reciclable",
+    "caja de pizza": "♻️ Reciclable",
+    "pasto": "🌱 Orgánico",
+    "corcho": "🌱 Orgánico",
+    "madera": "🌱 Orgánico",
+    "servilleta sucia": "🗑️ Basura",
+    "espejo roto": "🗑️ Basura",
+    "ceramica": "🗑️ Basura",
+    "cepillo de dientes": "🗑️ Basura",
+    "frasco de perfume": "♻️ Reciclable",
+    "cuaderno": "♻️ Reciclable",
+    "folletos": "♻️ Reciclable",
+    "papas fritas": "🌱 Orgánico",
+    "huesos": "🌱 Orgánico",
+    "pan": "🌱 Orgánico",
+    "cafe": "🌱 Orgánico",
+    "mascarilla": "🗑️ Basura",
+    "esponja de cocina": "🗑️ Basura",
+    "algodon": "🗑️ Basura"
+}
+
+@bot.command()
+async def residuo(ctx, *, nombre):
+    nombre = nombre.lower()
+    if nombre in residuos:
+        await ctx.send(f"🔍 **{nombre}** → {residuos[nombre]}")
+    else:
+        await ctx.send(
+            f"🤔 No sé qué hacer con *{nombre}*.\n"
+            "Pregunta a un experto o revisa normas locales."
+        )
+
+bot.run("")
