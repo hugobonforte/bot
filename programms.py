@@ -2,10 +2,23 @@
 import discord
 import os
 from discord.ext import commands
+from datos import residuos
 import random
+
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='¡', intents=intents)
+# Este comando sirve para que el bot responda con la categoría de residuo a la que pertenece un residuo específico que el usuario le da al bot.
+@bot.command()
+async def residuo(ctx, *, nombre):
+    nombre = nombre.lower()
+    if nombre in residuos:
+        await ctx.send(f"🔍 **{nombre}** → {residuos[nombre]}"
+    else:
+        await ctx.send(
+            f"🤔 No sé qué hacer con **{nombre}**.\n"
+            "Pregunta a un experto o revisa normas locales."
+        )
 # Este evento se ejecuta cuando el bot se conecta a Discord. Imprime un mensaje en la consola indicando que el bot ha iniciado sesión correctamente.    
 @bot.event
 async def on_ready():
